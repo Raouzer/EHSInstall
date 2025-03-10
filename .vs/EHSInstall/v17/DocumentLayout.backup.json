@@ -1,0 +1,75 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4182DEB4-FB35-4227-BA50-9547A324AF40}|EHSInstall\\EHSInstall.csproj|c:\\users\\jrobisg\\onedrive - johnson controls\\documents\\github\\ehsinstall\\ehsinstall\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4182DEB4-FB35-4227-BA50-9547A324AF40}|EHSInstall\\EHSInstall.csproj|solutionrelative:ehsinstall\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4182DEB4-FB35-4227-BA50-9547A324AF40}|EHSInstall\\EHSInstall.csproj|C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\ehsinstall\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4182DEB4-FB35-4227-BA50-9547A324AF40}|EHSInstall\\EHSInstall.csproj|solutionrelative:ehsinstall\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4182DEB4-FB35-4227-BA50-9547A324AF40}|EHSInstall\\EHSInstall.csproj|C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\ehsinstall\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4182DEB4-FB35-4227-BA50-9547A324AF40}|EHSInstall\\EHSInstall.csproj|solutionrelative:ehsinstall\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\EHSInstall\\Form1.cs",
+              "RelativeDocumentMoniker": "EHSInstall\\Form1.cs",
+              "ToolTip": "C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\EHSInstall\\Form1.cs [Design]*",
+              "RelativeToolTip": "EHSInstall\\Form1.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T10:13:26.125Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\EHSInstall\\Form1.cs",
+              "RelativeDocumentMoniker": "EHSInstall\\Form1.cs",
+              "ToolTip": "C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\EHSInstall\\Form1.cs*",
+              "RelativeToolTip": "EHSInstall\\Form1.cs*",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAswE8AAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T10:17:59.579Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\EHSInstall\\Form1.Designer.cs",
+              "RelativeDocumentMoniker": "EHSInstall\\Form1.Designer.cs",
+              "ToolTip": "C:\\Users\\jrobisg\\OneDrive - Johnson Controls\\Documents\\GitHub\\EHSInstall\\EHSInstall\\Form1.Designer.cs",
+              "RelativeToolTip": "EHSInstall\\Form1.Designer.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAcwFMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-10T11:38:22.823Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
