@@ -57,17 +57,39 @@ namespace EHSInstall
 
                 // Construire le chemin complet du dossier source
                 string sourceSubDir = Path.Combine(sourceDir, folderName);
+                String destinationSubDir = Path.Combine(destinationDir, folderName);
 
                 // Vérifier si le dossier source existe
                 if (Directory.Exists(sourceSubDir))
                 {
-                    Console.WriteLine($"Copie du dossier {folderName} vers {destinationDir}");
-                    // Appel de la méthode pour copier ce dossier spécifique
-                    CopyDirectory(sourceSubDir, destinationDir);
-                }
-                else
-                {
-                    Console.WriteLine($"Le dossier {folderName} n'existe pas dans {sourceDir}");
+                    switch (folderName)
+                    {
+                        case "Formation":
+                            if (!Directory.Exists(destinationDir))
+                            {
+                                Directory.CreateDirectory(destinationDir);
+                                SendToConsole($"Le dossier {destinationDir} a été créé.");
+                            }
+                            CopyDirectory(sourceSubDir, destinationSubDir);
+                            SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
+                            break;
+                        case "PDFViewer":
+                            if (!Directory.Exists(destinationDir))
+                            {
+                                Directory.CreateDirectory(destinationDir);
+                                SendToConsole($"Le dossier {destinationDir} a été créé.");
+                            }
+                            CopyDirectory(sourceSubDir, destinationSubDir);
+                            SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
+                            break;
+                        case "Raccourci":
+                            CopyDirectory(sourceSubDir, destinationDir);
+                            SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
+                            break;
+                        default:
+
+                            break;
+                    }
                 }
             }
         }
@@ -172,7 +194,7 @@ namespace EHSInstall
             foreach (string item in selectedItems)
             {
 
-                //networkPath = @"\\"+item+"\\c$" // Remplace par l'IP du PC distant \\Users\\Public\\Desktop"
+                networkPath = @"\\" + item + "\\c$"; // Remplace par l'IP du PC distant \\Users\\Public\\Desktop"
                 SendToConsole("NetworkPath : " + networkPath);
                 try
                 {

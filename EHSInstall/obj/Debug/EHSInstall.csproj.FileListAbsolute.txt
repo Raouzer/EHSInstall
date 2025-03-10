@@ -8,3 +8,13 @@ C:\Users\jrobisg\OneDrive - Johnson Controls\Documents\GitHub\EHSInstall\EHSInst
 C:\Users\jrobisg\OneDrive - Johnson Controls\Documents\GitHub\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.CoreCompileInputs.cache
 C:\Users\jrobisg\OneDrive - Johnson Controls\Documents\GitHub\EHSInstall\EHSInstall\obj\Debug\EHSInstall.exe
 C:\Users\jrobisg\OneDrive - Johnson Controls\Documents\GitHub\EHSInstall\EHSInstall\obj\Debug\EHSInstall.pdb
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\bin\Debug\EHSInstall.exe.config
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\bin\Debug\EHSInstall.exe
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\bin\Debug\EHSInstall.pdb
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.AssemblyReference.cache
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.MainForm.resources
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.Properties.Resources.resources
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.GenerateResource.cache
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.CoreCompileInputs.cache
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.exe
+C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.pdb
