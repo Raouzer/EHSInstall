@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.PathSelectorMainFolderbutton = new System.Windows.Forms.Button();
             this.checkedListBoxPcSelected = new System.Windows.Forms.CheckedListBox();
             this.StartButton = new System.Windows.Forms.Button();
@@ -246,6 +247,7 @@
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.checkedListBoxPcSelected);
             this.Controls.Add(this.PathSelectorMainFolderbutton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(916, 548);
             this.MinimumSize = new System.Drawing.Size(893, 548);
             this.Name = "MainForm";
