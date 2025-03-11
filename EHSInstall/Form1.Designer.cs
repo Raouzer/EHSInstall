@@ -45,6 +45,7 @@
             this.checkBoxCopieApp = new System.Windows.Forms.CheckBox();
             this.checkBoxCopieQuiz = new System.Windows.Forms.CheckBox();
             this.checkBoxCopieRaccourci = new System.Windows.Forms.CheckBox();
+            this.buttonRestart = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelMainFolderPath
@@ -67,9 +68,9 @@
             // 
             // PathSelectorMainFolderbutton
             // 
-            this.PathSelectorMainFolderbutton.Location = new System.Drawing.Point(15, 134);
+            this.PathSelectorMainFolderbutton.Location = new System.Drawing.Point(12, 134);
             this.PathSelectorMainFolderbutton.Name = "PathSelectorMainFolderbutton";
-            this.PathSelectorMainFolderbutton.Size = new System.Drawing.Size(289, 23);
+            this.PathSelectorMainFolderbutton.Size = new System.Drawing.Size(292, 23);
             this.PathSelectorMainFolderbutton.TabIndex = 2;
             this.PathSelectorMainFolderbutton.Text = "Selectionner le dossier";
             this.PathSelectorMainFolderbutton.UseVisualStyleBackColor = true;
@@ -81,14 +82,9 @@
             this.checkedListBoxPcSelected.HorizontalScrollbar = true;
             this.checkedListBoxPcSelected.ImeMode = System.Windows.Forms.ImeMode.On;
             this.checkedListBoxPcSelected.IntegralHeight = false;
-            this.checkedListBoxPcSelected.Items.AddRange(new object[] {
-            "10.107.79.128",
-            "10.107.79.129",
-            "10.107.79.130",
-            "10.107.79.131"});
             this.checkedListBoxPcSelected.Location = new System.Drawing.Point(12, 192);
             this.checkedListBoxPcSelected.Name = "checkedListBoxPcSelected";
-            this.checkedListBoxPcSelected.Size = new System.Drawing.Size(292, 212);
+            this.checkedListBoxPcSelected.Size = new System.Drawing.Size(292, 176);
             this.checkedListBoxPcSelected.TabIndex = 3;
             // 
             // StartButton
@@ -163,19 +159,19 @@
             // 
             this.buttonSelectAll.Location = new System.Drawing.Point(12, 163);
             this.buttonSelectAll.Name = "buttonSelectAll";
-            this.buttonSelectAll.Size = new System.Drawing.Size(96, 23);
+            this.buttonSelectAll.Size = new System.Drawing.Size(134, 23);
             this.buttonSelectAll.TabIndex = 13;
-            this.buttonSelectAll.Text = "Select All";
+            this.buttonSelectAll.Text = "Sélectionner tout";
             this.buttonSelectAll.UseVisualStyleBackColor = true;
             this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
             // 
             // buttonDeselectAll
             // 
-            this.buttonDeselectAll.Location = new System.Drawing.Point(114, 163);
+            this.buttonDeselectAll.Location = new System.Drawing.Point(152, 163);
             this.buttonDeselectAll.Name = "buttonDeselectAll";
-            this.buttonDeselectAll.Size = new System.Drawing.Size(96, 23);
+            this.buttonDeselectAll.Size = new System.Drawing.Size(152, 23);
             this.buttonDeselectAll.TabIndex = 14;
-            this.buttonDeselectAll.Text = "Deselect All";
+            this.buttonDeselectAll.Text = "Désélectionner tout";
             this.buttonDeselectAll.UseVisualStyleBackColor = true;
             this.buttonDeselectAll.Click += new System.EventHandler(this.buttonDeselectAll_Click);
             // 
@@ -227,11 +223,22 @@
             this.checkBoxCopieRaccourci.Text = "Raccourci";
             this.checkBoxCopieRaccourci.UseVisualStyleBackColor = true;
             // 
+            // buttonRestart
+            // 
+            this.buttonRestart.Location = new System.Drawing.Point(12, 374);
+            this.buttonRestart.Name = "buttonRestart";
+            this.buttonRestart.Size = new System.Drawing.Size(292, 23);
+            this.buttonRestart.TabIndex = 19;
+            this.buttonRestart.Text = "Redémarrer le pc sélectionné.";
+            this.buttonRestart.UseVisualStyleBackColor = true;
+            this.buttonRestart.Click += new System.EventHandler(this.buttonRestart_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 526);
+            this.Controls.Add(this.buttonRestart);
             this.Controls.Add(this.checkBoxCopieRaccourci);
             this.Controls.Add(this.checkBoxCopieQuiz);
             this.Controls.Add(this.checkBoxCopieApp);
@@ -276,6 +283,7 @@
         private System.Windows.Forms.CheckBox checkBoxCopieApp;
         private System.Windows.Forms.CheckBox checkBoxCopieQuiz;
         private System.Windows.Forms.CheckBox checkBoxCopieRaccourci;
+        private System.Windows.Forms.Button buttonRestart;
     }
 }
 

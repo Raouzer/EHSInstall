@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.IO.Compression;
 
 namespace EHSInstall
@@ -20,9 +15,11 @@ namespace EHSInstall
         private string selectedPath;
         private string networkPath;
         private List<string> selectedItems;
+        private const string IpFilePath = "ips.txt";
         public MainForm()
         {
             InitializeComponent();
+            LoadIpList();
         }
 
         private void PathSelectorMainFolderbutton_Click(object sender, EventArgs e)
@@ -75,14 +72,14 @@ namespace EHSInstall
                                 }
                                 else 
                                 {
-                                    SendToConsole($"Suppression des éléments du dossier.");
+                                    SendToConsole($"Suppression des éléments du dossier : {destinationSubDir}.");
                                     await Task.Run(() => removeAllFile(destinationSubDir));
                                 }
                                     SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
                                 await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
                                 SendToConsole($"Extraction de Quiz.zip");
                                 await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "Quiz.zip"), destinationSubDir));
-                                progressBar.Value++;
+                                UpdateProgressBar();
                             }
                             
                             break;
@@ -96,7 +93,7 @@ namespace EHSInstall
                                 }
                                 else
                                 {
-                                    SendToConsole($"Suppression des éléments du dossier.");
+                                    SendToConsole($"Suppression des éléments du dossier : {destinationSubDir}.");
                                     await Task.Run(() => removeAllFile(destinationSubDir));
                                 }
                                 SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
@@ -104,7 +101,7 @@ namespace EHSInstall
 
                                 SendToConsole($"Extraction de PDFViewer.zip");
                                 await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "PDFViewer.zip"), destinationSubDir));
-                                progressBar.Value++;
+                                UpdateProgressBar();
                             }
                             
                             break;
@@ -118,13 +115,13 @@ namespace EHSInstall
                                 }
                                 else
                                 {
-                                    SendToConsole($"Suppression des éléments du dossier.");
+                                    SendToConsole($"Suppression des éléments du dossier : {destinationDir}.");
                                     await Task.Run(() => removeAllFile(destinationDir));
                                 }
                                 
                                 SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
                                 await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
-                                progressBar.Value++;
+                                UpdateProgressBar();
                             }
                             
                             break;
@@ -134,7 +131,7 @@ namespace EHSInstall
                                 await Task.Run(() => removeAllFile(destinationDir));
                                 SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
                                 await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
-                                progressBar.Value++;
+                                UpdateProgressBar();
                             }
                             break;
                         default:
@@ -173,6 +170,18 @@ namespace EHSInstall
             }
 
             progressBar.Maximum = numberSelectedPC * checkCopie;
+        }
+
+        private void UpdateProgressBar()
+        {
+            if (progressBar.InvokeRequired) // Vérifie si on est sur un thread différent
+            {
+                progressBar.Invoke(new Action(UpdateProgressBar));
+            }
+            else
+            {
+                progressBar.Value++;
+            }
         }
         private void removeAllFile(String destinationDir)
         {
@@ -228,36 +237,16 @@ namespace EHSInstall
             }
         }
 
-        /* private void CopyDirectory(string sourceDir, string destinationDir)
-         {
-             if (!Directory.Exists(destinationDir))
-             {
-                 Directory.CreateDirectory(destinationDir);
-                 MessageBox.Show("Directory créé");
-             }
+        private void LoadIpList()
+        {
+            if (File.Exists(IpFilePath))
+            {
+                string[] ips = File.ReadAllLines(IpFilePath);
+                checkedListBoxPcSelected.Items.AddRange(ips);
+            }
+        }
 
-             // Copier les fichiers
-             foreach (string file in Directory.GetFiles(sourceDir))
-             {
-                 string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
-                 File.Copy(file, destFile, true); // `true` écrase si le fichier existe
-             }
-
-             // Copier les sous-dossiers
-             foreach (string subDir in Directory.GetDirectories(sourceDir))
-             {
-                 if(subDir == "Formation")
-                 {
-                     string destSubDir = Path.Combine(destinationDir, Path.GetFileName(subDir));
-                     CopyDirectory(subDir, destSubDir); // Récursion
-                 }
-
-             }
-
-         }*/
-
-
-        private void StartButton_Click(object sender, EventArgs e)
+        private async void StartButton_Click(object sender, EventArgs e)
         {
           
             string username = textBoxLogin.Text;
@@ -265,65 +254,26 @@ namespace EHSInstall
             int numberMaxOfItem = 0;
 
             selectedItems = checkedListBoxPcSelected.CheckedItems.Cast<string>().ToList();
-            SendToConsole("Selected PC : ");
+            
             foreach (string item in selectedItems)
             {
-                SendToConsole(item);
                 numberMaxOfItem++;
             }
             initProgressBar();
 
-            int cptItem = 0;
             foreach (string item in selectedItems)
             {
-
+                SendToConsole("*************************************************");
+                SendToConsole($"Envoie des fichiers vers {item}");
                 networkPath = @"\\" + item + "\\c$"; // Remplace par l'IP du PC distant \\Users\\Public\\Deskto
                 try
                 {
+                    String valideConnection = await Task.Run(() => ConnexionToPC(username, password, item));
 
-                    ProcessStartInfo psi = new ProcessStartInfo
-                    {
-                        FileName = "cmd.exe",
-                        Arguments = $"/C net use {networkPath} /user: local\\{username} {password}",
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    };
-
-                    using (Process process = Process.Start(psi))
-                    {
-
-
-                        if (process.WaitForExit(10000)) // Attend max 10 secondes
-                        {
-                            Console.WriteLine("Connexion réussie !");
-                            SendToConsole("Connexion réussie!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("⏳ Timeout dépassé ! Fermeture du processus...");
-                            SendToConsole("Erreur de connexion, suivant...");
-                            process.Kill(); // Forcer l'arrêt si ça prend trop de temps
-                        }
-                    }
-
-                    // Test d'accès au dossier
-                    if (System.IO.Directory.Exists(networkPath))
-                    {
-                        Console.WriteLine("Accès confirmé !");
-                        SendToConsole("Accès confirmé !");
-                        // CopieFile();
-                        CopySpecificDirectories(selectedPath, item);
-
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("Accès refusé !");
-                        SendToConsole("Accès refusé !");
+                    if (valideConnection != null) { 
+                        SendToConsole(valideConnection);
                     }
                 }
-
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Erreur : {ex.Message}");
@@ -331,6 +281,30 @@ namespace EHSInstall
                 }
             }
             
+        }
+
+        private String ConnexionToPC(String username, String password,String item) {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/C net use {networkPath} /user:.\\{username} {password}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }; 
+
+            if (System.IO.Directory.Exists(networkPath))
+            {
+                Console.WriteLine("Accès confirmé !");
+                CopySpecificDirectories(selectedPath, item);
+                return null;
+            }
+            else
+            {
+                Console.WriteLine("Accès refusé !");
+                return "Accès refusé !";
+            }
         }
 
         private void SendToConsole(String data)
@@ -355,5 +329,61 @@ namespace EHSInstall
                 checkedListBoxPcSelected.SetItemChecked(i, false);
             }
         }
+
+        private async void buttonRestart_Click(object sender, EventArgs e)
+        {
+            selectedItems = checkedListBoxPcSelected.CheckedItems.Cast<string>().ToList();
+            int numberOfIp = 0;
+            foreach (string item in selectedItems)
+            {
+                numberOfIp++;
+            }
+            if (numberOfIp == 1)
+            {
+                foreach (string item in selectedItems)
+                {
+                    SendToConsole($"Tentative de redémarrage du pc : {item}");
+                    String reply = await Task.Run(() => RestartRemotePC(item, textBoxLogin.Text, textBoxPassword.Text));
+                    SendToConsole(reply);
+                } 
+            }
+            else
+            {
+                SendToConsole("Veuillez sélectionner une seule ip.");
+            }
+        }
+
+        public String RestartRemotePC(string ip, string username, string password)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/C shutdown /r /m \\\\{ip} /t 10 /f",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(psi))
+            {
+                process.WaitForExit();
+
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    Console.WriteLine("Erreur : " + error);
+                    return ("Erreur : " + error);
+                }
+                else
+                {
+                    Console.WriteLine($"Redémarrage du PC {ip} en cours...");
+                    return ($"Redémarrage du PC {ip} en cours...");
+                }
+            }
+        }
+
     }
 }
