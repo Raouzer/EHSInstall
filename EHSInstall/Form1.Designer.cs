@@ -41,6 +41,10 @@
             this.richTextBoxConsole = new System.Windows.Forms.RichTextBox();
             this.buttonSelectAll = new System.Windows.Forms.Button();
             this.buttonDeselectAll = new System.Windows.Forms.Button();
+            this.checkBoxCopiePDF = new System.Windows.Forms.CheckBox();
+            this.checkBoxCopieApp = new System.Windows.Forms.CheckBox();
+            this.checkBoxCopieQuiz = new System.Windows.Forms.CheckBox();
+            this.checkBoxCopieRaccourci = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // labelMainFolderPath
@@ -84,7 +88,7 @@
             "10.107.79.131"});
             this.checkedListBoxPcSelected.Location = new System.Drawing.Point(12, 192);
             this.checkedListBoxPcSelected.Name = "checkedListBoxPcSelected";
-            this.checkedListBoxPcSelected.Size = new System.Drawing.Size(292, 245);
+            this.checkedListBoxPcSelected.Size = new System.Drawing.Size(292, 212);
             this.checkedListBoxPcSelected.TabIndex = 3;
             // 
             // StartButton
@@ -100,9 +104,11 @@
             // 
             // progressBar
             // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(12, 495);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(292, 23);
+            this.progressBar.Size = new System.Drawing.Size(876, 23);
             this.progressBar.TabIndex = 5;
             // 
             // textBoxLogin
@@ -149,7 +155,7 @@
             this.richTextBoxConsole.ForeColor = System.Drawing.Color.White;
             this.richTextBoxConsole.Location = new System.Drawing.Point(315, 25);
             this.richTextBoxConsole.Name = "richTextBoxConsole";
-            this.richTextBoxConsole.Size = new System.Drawing.Size(573, 493);
+            this.richTextBoxConsole.Size = new System.Drawing.Size(573, 460);
             this.richTextBoxConsole.TabIndex = 12;
             this.richTextBoxConsole.Text = "";
             // 
@@ -173,11 +179,63 @@
             this.buttonDeselectAll.UseVisualStyleBackColor = true;
             this.buttonDeselectAll.Click += new System.EventHandler(this.buttonDeselectAll_Click);
             // 
+            // checkBoxCopiePDF
+            // 
+            this.checkBoxCopiePDF.AutoSize = true;
+            this.checkBoxCopiePDF.Checked = true;
+            this.checkBoxCopiePDF.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCopiePDF.Location = new System.Drawing.Point(15, 411);
+            this.checkBoxCopiePDF.Name = "checkBoxCopiePDF";
+            this.checkBoxCopiePDF.Size = new System.Drawing.Size(47, 17);
+            this.checkBoxCopiePDF.TabIndex = 15;
+            this.checkBoxCopiePDF.Text = "PDF";
+            this.checkBoxCopiePDF.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxCopieApp
+            // 
+            this.checkBoxCopieApp.AutoSize = true;
+            this.checkBoxCopieApp.Checked = true;
+            this.checkBoxCopieApp.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCopieApp.Location = new System.Drawing.Point(68, 411);
+            this.checkBoxCopieApp.Name = "checkBoxCopieApp";
+            this.checkBoxCopieApp.Size = new System.Drawing.Size(78, 17);
+            this.checkBoxCopieApp.TabIndex = 16;
+            this.checkBoxCopieApp.Text = "Application";
+            this.checkBoxCopieApp.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxCopieQuiz
+            // 
+            this.checkBoxCopieQuiz.AutoSize = true;
+            this.checkBoxCopieQuiz.Checked = true;
+            this.checkBoxCopieQuiz.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCopieQuiz.Location = new System.Drawing.Point(152, 411);
+            this.checkBoxCopieQuiz.Name = "checkBoxCopieQuiz";
+            this.checkBoxCopieQuiz.Size = new System.Drawing.Size(47, 17);
+            this.checkBoxCopieQuiz.TabIndex = 17;
+            this.checkBoxCopieQuiz.Text = "Quiz";
+            this.checkBoxCopieQuiz.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxCopieRaccourci
+            // 
+            this.checkBoxCopieRaccourci.AutoSize = true;
+            this.checkBoxCopieRaccourci.Checked = true;
+            this.checkBoxCopieRaccourci.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCopieRaccourci.Location = new System.Drawing.Point(205, 411);
+            this.checkBoxCopieRaccourci.Name = "checkBoxCopieRaccourci";
+            this.checkBoxCopieRaccourci.Size = new System.Drawing.Size(75, 17);
+            this.checkBoxCopieRaccourci.TabIndex = 18;
+            this.checkBoxCopieRaccourci.Text = "Raccourci";
+            this.checkBoxCopieRaccourci.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 526);
+            this.Controls.Add(this.checkBoxCopieRaccourci);
+            this.Controls.Add(this.checkBoxCopieQuiz);
+            this.Controls.Add(this.checkBoxCopieApp);
+            this.Controls.Add(this.checkBoxCopiePDF);
             this.Controls.Add(this.buttonDeselectAll);
             this.Controls.Add(this.buttonSelectAll);
             this.Controls.Add(this.richTextBoxConsole);
@@ -214,6 +272,10 @@
         private System.Windows.Forms.RichTextBox richTextBoxConsole;
         private System.Windows.Forms.Button buttonSelectAll;
         private System.Windows.Forms.Button buttonDeselectAll;
+        private System.Windows.Forms.CheckBox checkBoxCopiePDF;
+        private System.Windows.Forms.CheckBox checkBoxCopieApp;
+        private System.Windows.Forms.CheckBox checkBoxCopieQuiz;
+        private System.Windows.Forms.CheckBox checkBoxCopieRaccourci;
     }
 }
 

@@ -18,3 +18,13 @@ C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.Ge
 C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.CoreCompileInputs.cache
 C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.exe
 C:\Users\gaeta\source\repos\EHSInstall\EHSInstall\obj\Debug\EHSInstall.pdb
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.AssemblyReference.cache
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\obj\Debug\EHSInstall.MainForm.resources
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\obj\Debug\EHSInstall.Properties.Resources.resources
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.GenerateResource.cache
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\obj\Debug\EHSInstall.csproj.CoreCompileInputs.cache
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\obj\Debug\EHSInstall.exe
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\obj\Debug\EHSInstall.pdb
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\bin\Debug\EHSInstall.exe.config
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\bin\Debug\EHSInstall.exe
+C:\Users\Gaetan\Documents\Github\EHSInstall\EHSInstall\bin\Debug\EHSInstall.pdb

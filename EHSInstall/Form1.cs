@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.IO.Compression;
 
 namespace EHSInstall
 {
@@ -40,13 +41,14 @@ namespace EHSInstall
             }
         }
 
-        private void CopySpecificDirectories(string sourceDir , string ip)
+        private async void CopySpecificDirectories(string sourceDir , string ip)
         {
             // Définir les dossiers et leurs destinations
             var directoriesToCopy = new Dictionary<string, string>
     {
-            { "Formation", @"\\"+ ip +"\\c$\\Apps" },
+            { "Quiz", @"\\"+ ip +"\\c$\\Apps" },
             { "PDFViewer", @"\\"+ ip +"\\c$\\Apps" },
+            { "PDF", @"\\"+ ip +"\\c$\\Apps\\PDFViewer\\PDF" },
             { "Raccourci", @"\\"+ ip +"\\c$\\Users\\Public\\Desktop" }
     };
 
@@ -64,27 +66,76 @@ namespace EHSInstall
                 {
                     switch (folderName)
                     {
-                        case "Formation":
-                            if (!Directory.Exists(destinationDir))
-                            {
-                                Directory.CreateDirectory(destinationDir);
-                                SendToConsole($"Le dossier {destinationDir} a été créé.");
+                        case "Quiz":
+                            if(checkBoxCopieQuiz.Checked == true) {
+                                if (!Directory.Exists(destinationSubDir))
+                                {
+                                    Directory.CreateDirectory(destinationSubDir);
+                                    SendToConsole("Le dossier" + destinationSubDir + " a été créé.");
+                                }
+                                else 
+                                {
+                                    SendToConsole($"Suppression des éléments du dossier.");
+                                    await Task.Run(() => removeAllFile(destinationSubDir));
+                                }
+                                    SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
+                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
+                                SendToConsole($"Extraction de Quiz.zip");
+                                await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "Quiz.zip"), destinationSubDir));
+                                progressBar.Value++;
                             }
-                            CopyDirectory(sourceSubDir, destinationSubDir);
-                            SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
+                            
                             break;
                         case "PDFViewer":
-                            if (!Directory.Exists(destinationDir))
+                            if (checkBoxCopieApp.Checked == true)
                             {
-                                Directory.CreateDirectory(destinationDir);
-                                SendToConsole($"Le dossier {destinationDir} a été créé.");
+                                if (!Directory.Exists(destinationSubDir))
+                                {
+                                    Directory.CreateDirectory(destinationSubDir);
+                                    SendToConsole("Le dossier" + destinationSubDir + " a été créé.");
+                                }
+                                else
+                                {
+                                    SendToConsole($"Suppression des éléments du dossier.");
+                                    await Task.Run(() => removeAllFile(destinationSubDir));
+                                }
+                                SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
+                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
+
+                                SendToConsole($"Extraction de PDFViewer.zip");
+                                await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "PDFViewer.zip"), destinationSubDir));
+                                progressBar.Value++;
                             }
-                            CopyDirectory(sourceSubDir, destinationSubDir);
-                            SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
+                            
+                            break;
+                        case "PDF":
+                            if (checkBoxCopiePDF.Checked == true)
+                            {
+                                if (!Directory.Exists(destinationDir))
+                                {
+                                    Directory.CreateDirectory(destinationDir);
+                                    SendToConsole("Le dossier" + destinationDir + " a été créé.");
+                                }
+                                else
+                                {
+                                    SendToConsole($"Suppression des éléments du dossier.");
+                                    await Task.Run(() => removeAllFile(destinationDir));
+                                }
+                                
+                                SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
+                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
+                                progressBar.Value++;
+                            }
+                            
                             break;
                         case "Raccourci":
-                            CopyDirectory(sourceSubDir, destinationDir);
-                            SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
+                            if (checkBoxCopieRaccourci.Checked == true)
+                            {
+                                await Task.Run(() => removeAllFile(destinationDir));
+                                SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
+                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
+                                progressBar.Value++;
+                            }
                             break;
                         default:
 
@@ -92,15 +143,66 @@ namespace EHSInstall
                     }
                 }
             }
+            SendToConsole("Copie des fichier terminée.");
         }
 
+        private void initProgressBar()
+        {
+            int checkCopie = 0;
+            int numberSelectedPC = 0;
+            progressBar.Value = 0;
+            if(checkBoxCopiePDF.Checked == true)
+            {
+                checkCopie++;
+            }
+            if (checkBoxCopieApp.Checked == true)
+            {
+                checkCopie++;
+            }
+            if (checkBoxCopieQuiz.Checked == true)
+            {
+                checkCopie++;
+            }
+            if (checkBoxCopieRaccourci.Checked == true)
+            {
+                checkCopie++;
+            }
+            foreach (string item in selectedItems)
+            {
+                numberSelectedPC++;
+            }
+
+            progressBar.Maximum = numberSelectedPC * checkCopie;
+        }
+        private void removeAllFile(String destinationDir)
+        {
+            try
+            {
+                // Supprime tous les fichiers
+                foreach (string file in Directory.GetFiles(destinationDir))
+                {
+                    File.Delete(file);
+                }
+
+                // Supprime tous les sous-dossiers
+                foreach (string dir in Directory.GetDirectories(destinationDir))
+                {
+                    Directory.Delete(dir, true); // `true` pour supprimer récursivement
+                }
+
+                Console.WriteLine("Dossier vidé avec succès !");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur : {ex.Message}");
+            }
+        }
         private void CopyDirectory(string sourceDir, string destinationDir)
         {
             // Créer le dossier de destination s'il n'existe pas
             if (!Directory.Exists(destinationDir))
             {
                 Directory.CreateDirectory(destinationDir);
-                SendToConsole("Le dossier {destinationDir} a été créé.");
             }
 
             // Copier les fichiers
@@ -124,7 +226,6 @@ namespace EHSInstall
                 // Appel récursif pour copier les sous-dossiers
                 CopyDirectory(subDir, destSubDir);
             }
-            SendToConsole("Fin de copie.");
         }
 
         /* private void CopyDirectory(string sourceDir, string destinationDir)
@@ -155,19 +256,6 @@ namespace EHSInstall
 
          }*/
 
-        private void CopieFile()
-        {
-            SendToConsole("Try to copie file.");
-            if (Directory.Exists(networkPath))
-            {
-                CopyDirectory(selectedPath, networkPath);
-                SendToConsole("Fichiers copiés !");
-            }
-            else
-            {
-                SendToConsole("Network Patch error : "+ networkPath);
-            }
-        }
 
         private void StartButton_Click(object sender, EventArgs e)
         {
@@ -175,13 +263,7 @@ namespace EHSInstall
             string username = textBoxLogin.Text;
             string password = textBoxPassword.Text;
             int numberMaxOfItem = 0;
-            
 
-
-            SendToConsole("Login " + username);
-            SendToConsole("Password " + password);
-            SendToConsole("LocalPath " + selectedPath);
-            
             selectedItems = checkedListBoxPcSelected.CheckedItems.Cast<string>().ToList();
             SendToConsole("Selected PC : ");
             foreach (string item in selectedItems)
@@ -189,13 +271,13 @@ namespace EHSInstall
                 SendToConsole(item);
                 numberMaxOfItem++;
             }
-            progressBar.Maximum = numberMaxOfItem;
+            initProgressBar();
+
             int cptItem = 0;
             foreach (string item in selectedItems)
             {
 
-                networkPath = @"\\" + item + "\\c$"; // Remplace par l'IP du PC distant \\Users\\Public\\Desktop"
-                SendToConsole("NetworkPath : " + networkPath);
+                networkPath = @"\\" + item + "\\c$"; // Remplace par l'IP du PC distant \\Users\\Public\\Deskto
                 try
                 {
 
@@ -247,8 +329,6 @@ namespace EHSInstall
                     Console.WriteLine($"Erreur : {ex.Message}");
                     SendToConsole($"Erreur : {ex.Message}");
                 }
-                cptItem++;
-                progressBar.Value = cptItem;
             }
             
         }
@@ -256,6 +336,8 @@ namespace EHSInstall
         private void SendToConsole(String data)
         {
             richTextBoxConsole.AppendText(data + "\n");
+            richTextBoxConsole.SelectionStart = richTextBoxConsole.Text.Length;
+            richTextBoxConsole.ScrollToCaret();
         }
 
         private void buttonSelectAll_Click(object sender, EventArgs e)
