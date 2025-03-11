@@ -46,6 +46,7 @@
             this.checkBoxCopieRaccourci = new System.Windows.Forms.CheckBox();
             this.buttonRestart = new System.Windows.Forms.Button();
             this.richTextBoxMainFolderPath = new System.Windows.Forms.RichTextBox();
+            this.labelVersion = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // PathSelectorMainFolderbutton
@@ -60,6 +61,7 @@
             // 
             // checkedListBoxPcSelected
             // 
+            this.checkedListBoxPcSelected.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkedListBoxPcSelected.FormattingEnabled = true;
             this.checkedListBoxPcSelected.HorizontalScrollbar = true;
             this.checkedListBoxPcSelected.ImeMode = System.Windows.Forms.ImeMode.On;
@@ -72,9 +74,9 @@
             // StartButton
             // 
             this.StartButton.Enabled = false;
-            this.StartButton.Location = new System.Drawing.Point(12, 430);
+            this.StartButton.Location = new System.Drawing.Point(12, 413);
             this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(292, 42);
+            this.StartButton.Size = new System.Drawing.Size(292, 59);
             this.StartButton.TabIndex = 4;
             this.StartButton.Text = "Start";
             this.StartButton.UseVisualStyleBackColor = true;
@@ -86,7 +88,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(12, 478);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(876, 23);
+            this.progressBar.Size = new System.Drawing.Size(784, 23);
             this.progressBar.TabIndex = 5;
             // 
             // textBoxLogin
@@ -162,7 +164,7 @@
             this.checkBoxCopiePDF.AutoSize = true;
             this.checkBoxCopiePDF.Checked = true;
             this.checkBoxCopiePDF.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCopiePDF.Location = new System.Drawing.Point(15, 398);
+            this.checkBoxCopiePDF.Location = new System.Drawing.Point(26, 390);
             this.checkBoxCopiePDF.Name = "checkBoxCopiePDF";
             this.checkBoxCopiePDF.Size = new System.Drawing.Size(47, 17);
             this.checkBoxCopiePDF.TabIndex = 15;
@@ -174,7 +176,7 @@
             this.checkBoxCopieApp.AutoSize = true;
             this.checkBoxCopieApp.Checked = true;
             this.checkBoxCopieApp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCopieApp.Location = new System.Drawing.Point(68, 398);
+            this.checkBoxCopieApp.Location = new System.Drawing.Point(79, 390);
             this.checkBoxCopieApp.Name = "checkBoxCopieApp";
             this.checkBoxCopieApp.Size = new System.Drawing.Size(78, 17);
             this.checkBoxCopieApp.TabIndex = 16;
@@ -186,7 +188,7 @@
             this.checkBoxCopieQuiz.AutoSize = true;
             this.checkBoxCopieQuiz.Checked = true;
             this.checkBoxCopieQuiz.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCopieQuiz.Location = new System.Drawing.Point(152, 398);
+            this.checkBoxCopieQuiz.Location = new System.Drawing.Point(163, 390);
             this.checkBoxCopieQuiz.Name = "checkBoxCopieQuiz";
             this.checkBoxCopieQuiz.Size = new System.Drawing.Size(47, 17);
             this.checkBoxCopieQuiz.TabIndex = 17;
@@ -198,7 +200,7 @@
             this.checkBoxCopieRaccourci.AutoSize = true;
             this.checkBoxCopieRaccourci.Checked = true;
             this.checkBoxCopieRaccourci.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCopieRaccourci.Location = new System.Drawing.Point(205, 398);
+            this.checkBoxCopieRaccourci.Location = new System.Drawing.Point(216, 390);
             this.checkBoxCopieRaccourci.Name = "checkBoxCopieRaccourci";
             this.checkBoxCopieRaccourci.Size = new System.Drawing.Size(75, 17);
             this.checkBoxCopieRaccourci.TabIndex = 18;
@@ -217,6 +219,7 @@
             // 
             // richTextBoxMainFolderPath
             // 
+            this.richTextBoxMainFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBoxMainFolderPath.Location = new System.Drawing.Point(12, 93);
             this.richTextBoxMainFolderPath.Name = "richTextBoxMainFolderPath";
             this.richTextBoxMainFolderPath.ReadOnly = true;
@@ -224,12 +227,25 @@
             this.richTextBoxMainFolderPath.TabIndex = 20;
             this.richTextBoxMainFolderPath.Text = "Sélectionner un dossier...";
             // 
+            // labelVersion
+            // 
+            this.labelVersion.AutoSize = true;
+            this.labelVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelVersion.Location = new System.Drawing.Point(798, 478);
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(89, 20);
+            this.labelVersion.TabIndex = 21;
+            this.labelVersion.Text = "© RG 2025 v1";
+            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelVersion.UseCompatibleTextRendering = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(900, 509);
+            this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.richTextBoxMainFolderPath);
             this.Controls.Add(this.buttonRestart);
             this.Controls.Add(this.checkBoxCopieRaccourci);
@@ -248,6 +264,7 @@
             this.Controls.Add(this.checkedListBoxPcSelected);
             this.Controls.Add(this.PathSelectorMainFolderbutton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(916, 548);
             this.MinimumSize = new System.Drawing.Size(893, 548);
             this.Name = "MainForm";
@@ -275,6 +292,7 @@
         private System.Windows.Forms.CheckBox checkBoxCopieRaccourci;
         private System.Windows.Forms.Button buttonRestart;
         private System.Windows.Forms.RichTextBox richTextBoxMainFolderPath;
+        private System.Windows.Forms.Label labelVersion;
     }
 }
 
