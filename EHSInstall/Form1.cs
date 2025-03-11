@@ -32,7 +32,7 @@ namespace EHSInstall
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     selectedPath = dialog.SelectedPath;
-                    labelMainFolderPath.Text = selectedPath;
+                    richTextBoxMainFolderPath.Text = selectedPath;
                     StartButton.Enabled = true;
                 }
             }
@@ -347,9 +347,13 @@ namespace EHSInstall
                     SendToConsole(reply);
                 } 
             }
+            else if (numberOfIp == 0)
+            {
+                SendToConsole("Veuillez sélectionner une adresse ip.");
+            }
             else
             {
-                SendToConsole("Veuillez sélectionner une seule ip.");
+                SendToConsole("Veuillez sélectionner une seule adresse ip.");
             }
         }
 
