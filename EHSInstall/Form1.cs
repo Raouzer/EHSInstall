@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace EHSInstall
 {
@@ -38,7 +39,7 @@ namespace EHSInstall
             }
         }
 
-        private async void CopySpecificDirectories(string sourceDir , string ip)
+        private async Task CopySpecificDirectories(string sourceDir ,string username,string password, string ip)
         {
             // Définir les dossiers et leurs destinations
             var directoriesToCopy = new Dictionary<string, string>
@@ -141,6 +142,8 @@ namespace EHSInstall
                 }
             }
             SendToConsole("Copie des fichier terminée.");
+            DisconnexionFromPC(username, password, ip);
+
         }
 
         private void initProgressBar()
@@ -239,6 +242,7 @@ namespace EHSInstall
 
         private void LoadIpList()
         {
+            checkedListBoxPcSelected.Items.Clear();
             if (File.Exists(IpFilePath))
             {
                 string[] ips = File.ReadAllLines(IpFilePath);
@@ -253,59 +257,126 @@ namespace EHSInstall
             string password = textBoxPassword.Text;
             int numberMaxOfItem = 0;
 
-            selectedItems = checkedListBoxPcSelected.CheckedItems.Cast<string>().ToList();
+            if(password != "" ) {
+                selectedItems = checkedListBoxPcSelected.CheckedItems.Cast<string>().ToList();
             
-            foreach (string item in selectedItems)
-            {
-                numberMaxOfItem++;
-            }
-            initProgressBar();
-
-            foreach (string item in selectedItems)
-            {
-                SendToConsole("*************************************************");
-                SendToConsole($"Envoie des fichiers vers {item}");
-                networkPath = @"\\" + item + "\\c$"; // Remplace par l'IP du PC distant \\Users\\Public\\Deskto
-                try
+                foreach (string item in selectedItems)
                 {
-                    String valideConnection = await Task.Run(() => ConnexionToPC(username, password, item));
+                    numberMaxOfItem++;
+                }
+                initProgressBar();
 
-                    if (valideConnection != null) { 
-                        SendToConsole(valideConnection);
+                foreach (string item in selectedItems)
+                {
+                
+                    SendToConsole(networkPath);
+                    try
+                    {
+                        await Task.Run(() => ConnexionToPC(username, password, item));
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erreur : {ex.Message}");
+                        SendToConsole($"Erreur : {ex.Message}");
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Erreur : {ex.Message}");
-                    SendToConsole($"Erreur : {ex.Message}");
-                }
             }
-            
-        }
+            else
+            {
+                SendToConsole("Vérifier vos informations de connection.");
+            }
 
-        private String ConnexionToPC(String username, String password,String item) {
+
+        }
+        private void DisconnexionFromPC(String username, String password, String item)
+        {
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
-                Arguments = $"/C net use {networkPath} /user:.\\{username} {password}",
+                Arguments = $"/C net use {networkPath} /delete /yes",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
-            }; 
+            };
 
-            if (System.IO.Directory.Exists(networkPath))
+            using (Process process = Process.Start(psi))
             {
-                Console.WriteLine("Accès confirmé !");
-                CopySpecificDirectories(selectedPath, item);
-                return null;
-            }
-            else
-            {
-                Console.WriteLine("Accès refusé !");
-                return "Accès refusé !";
+                process.WaitForExit();
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                Console.WriteLine(output);
+                Console.WriteLine(error);
+                SendToConsole($"Vous êtes déconnecté de {item}");
             }
         }
+
+ 
+        private async Task ConnexionToPC(string username, string password, string item)
+        {
+            string networkPath = $"\\\\{item}\\C$"; // Construire correctement le chemin réseau
+            richTextBoxConsole.Invoke(new Action(() => SendToConsole("*************************************************")));
+            richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Tentative de connexion vers {item}")));
+
+            ProcessStartInfo psiDisconnect = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/C net use {networkPath} /delete /yes",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using (Process process = Process.Start(psiDisconnect))
+            {
+                process.WaitForExit();
+            }
+
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/C net use {networkPath} /user:{username} {password}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            try
+            {
+                using (Process process = Process.Start(psi))
+                {
+                    process.WaitForExit(); // Attendre la fin du processus
+
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                   // richTextBoxConsole.Invoke(new Action(() => SendToConsole(output)));
+                    if (!string.IsNullOrWhiteSpace(error))
+                    {
+                        richTextBoxConsole.Invoke(new Action(() => SendToConsole($"\n ERREUR: {error}")));
+                    }
+                }
+
+                // Vérifier si l'accès est possible
+                if (System.IO.Directory.Exists(networkPath))
+                {
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole("✅ Accès confirmé !")));
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Envoie des fichiers vers {item}")));
+                    await CopySpecificDirectories(selectedPath, username, password, item);
+                }
+                else
+                {
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole("❌ Accès refusé !")));
+                }
+            }
+            catch (Exception ex)
+            {
+                richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Exception: {ex.Message}")));
+            }
+        }
+
 
         private void SendToConsole(String data)
         {
@@ -359,6 +430,21 @@ namespace EHSInstall
 
         public String RestartRemotePC(string ip, string username, string password)
         {
+            ProcessStartInfo psiConnect = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/C net use {networkPath} /user:{username} {password}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(psiConnect))
+            {
+                process.WaitForExit();
+            }
+
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -389,5 +475,9 @@ namespace EHSInstall
             }
         }
 
+        private void buttonMajList_Click(object sender, EventArgs e)
+        {
+            LoadIpList();
+        }
     }
 }

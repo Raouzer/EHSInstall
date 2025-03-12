@@ -47,6 +47,7 @@
             this.buttonRestart = new System.Windows.Forms.Button();
             this.richTextBoxMainFolderPath = new System.Windows.Forms.RichTextBox();
             this.labelVersion = new System.Windows.Forms.Label();
+            this.buttonMajList = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // PathSelectorMainFolderbutton
@@ -105,7 +106,6 @@
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(231, 20);
             this.textBoxPassword.TabIndex = 9;
-            this.textBoxPassword.Text = "GSK_2030_@_128";
             this.textBoxPassword.UseSystemPasswordChar = true;
             // 
             // labelLoginTitle
@@ -135,6 +135,7 @@
             this.richTextBoxConsole.ForeColor = System.Drawing.Color.White;
             this.richTextBoxConsole.Location = new System.Drawing.Point(315, 12);
             this.richTextBoxConsole.Name = "richTextBoxConsole";
+            this.richTextBoxConsole.ReadOnly = true;
             this.richTextBoxConsole.Size = new System.Drawing.Size(573, 460);
             this.richTextBoxConsole.TabIndex = 12;
             this.richTextBoxConsole.Text = "";
@@ -211,7 +212,7 @@
             // 
             this.buttonRestart.Location = new System.Drawing.Point(12, 361);
             this.buttonRestart.Name = "buttonRestart";
-            this.buttonRestart.Size = new System.Drawing.Size(292, 23);
+            this.buttonRestart.Size = new System.Drawing.Size(206, 23);
             this.buttonRestart.TabIndex = 19;
             this.buttonRestart.Text = "Redémarrer le pc sélectionné";
             this.buttonRestart.UseVisualStyleBackColor = true;
@@ -225,19 +226,30 @@
             this.richTextBoxMainFolderPath.ReadOnly = true;
             this.richTextBoxMainFolderPath.Size = new System.Drawing.Size(289, 51);
             this.richTextBoxMainFolderPath.TabIndex = 20;
-            this.richTextBoxMainFolderPath.Text = "Sélectionner un dossier...";
+            this.richTextBoxMainFolderPath.Text = "Sélectionner le dossier contenant les dossiers PDF, PdfViewer,Quiz et Raccourci.." +
+    ".";
             // 
             // labelVersion
             // 
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelVersion.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.Location = new System.Drawing.Point(798, 478);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(89, 20);
+            this.labelVersion.Size = new System.Drawing.Size(90, 20);
             this.labelVersion.TabIndex = 21;
             this.labelVersion.Text = "© RG 2025 v1";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelVersion.UseCompatibleTextRendering = true;
+            // 
+            // buttonMajList
+            // 
+            this.buttonMajList.Location = new System.Drawing.Point(224, 361);
+            this.buttonMajList.Name = "buttonMajList";
+            this.buttonMajList.Size = new System.Drawing.Size(80, 23);
+            this.buttonMajList.TabIndex = 22;
+            this.buttonMajList.Text = "Maj liste";
+            this.buttonMajList.UseVisualStyleBackColor = true;
+            this.buttonMajList.Click += new System.EventHandler(this.buttonMajList_Click);
             // 
             // MainForm
             // 
@@ -245,6 +257,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(900, 509);
+            this.Controls.Add(this.buttonMajList);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.richTextBoxMainFolderPath);
             this.Controls.Add(this.buttonRestart);
@@ -293,6 +306,7 @@
         private System.Windows.Forms.Button buttonRestart;
         private System.Windows.Forms.RichTextBox richTextBoxMainFolderPath;
         private System.Windows.Forms.Label labelVersion;
+        private System.Windows.Forms.Button buttonMajList;
     }
 }
 
