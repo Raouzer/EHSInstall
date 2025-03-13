@@ -8,6 +8,9 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Drawing;
 
 namespace EHSInstall
 {
@@ -20,7 +23,7 @@ namespace EHSInstall
         public MainForm()
         {
             InitializeComponent();
-            LoadIpList();
+            LoadListView();
         }
 
         private void PathSelectorMainFolderbutton_Click(object sender, EventArgs e)
@@ -39,7 +42,7 @@ namespace EHSInstall
             }
         }
 
-        private async Task CopySpecificDirectories(string sourceDir ,string username,string password, string ip)
+        private async Task CopySpecificDirectories(string sourceDir, string username, string password, string ip)
         {
             // Définir les dossiers et leurs destinations
             var directoriesToCopy = new Dictionary<string, string>
@@ -65,24 +68,25 @@ namespace EHSInstall
                     switch (folderName)
                     {
                         case "Quiz":
-                            if(checkBoxCopieQuiz.Checked == true) {
+                            if (checkBoxCopieQuiz.Checked == true)
+                            {
                                 if (!Directory.Exists(destinationSubDir))
                                 {
                                     Directory.CreateDirectory(destinationSubDir);
                                     SendToConsole("Le dossier" + destinationSubDir + " a été créé.");
                                 }
-                                else 
+                                else
                                 {
                                     SendToConsole($"Suppression des éléments du dossier : {destinationSubDir}.");
                                     await Task.Run(() => removeAllFile(destinationSubDir));
                                 }
-                                    SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
+                                SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
                                 await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
                                 SendToConsole($"Extraction de Quiz.zip");
                                 await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "Quiz.zip"), destinationSubDir));
                                 UpdateProgressBar();
                             }
-                            
+
                             break;
                         case "PDFViewer":
                             if (checkBoxCopieApp.Checked == true)
@@ -104,7 +108,7 @@ namespace EHSInstall
                                 await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "PDFViewer.zip"), destinationSubDir));
                                 UpdateProgressBar();
                             }
-                            
+
                             break;
                         case "PDF":
                             if (checkBoxCopiePDF.Checked == true)
@@ -119,12 +123,12 @@ namespace EHSInstall
                                     SendToConsole($"Suppression des éléments du dossier : {destinationDir}.");
                                     await Task.Run(() => removeAllFile(destinationDir));
                                 }
-                                
+
                                 SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
                                 await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
                                 UpdateProgressBar();
                             }
-                            
+
                             break;
                         case "Raccourci":
                             if (checkBoxCopieRaccourci.Checked == true)
@@ -151,7 +155,7 @@ namespace EHSInstall
             int checkCopie = 0;
             int numberSelectedPC = 0;
             progressBar.Value = 0;
-            if(checkBoxCopiePDF.Checked == true)
+            if (checkBoxCopiePDF.Checked == true)
             {
                 checkCopie++;
             }
@@ -240,26 +244,19 @@ namespace EHSInstall
             }
         }
 
-        private void LoadIpList()
-        {
-            checkedListBoxPcSelected.Items.Clear();
-            if (File.Exists(IpFilePath))
-            {
-                string[] ips = File.ReadAllLines(IpFilePath);
-                checkedListBoxPcSelected.Items.AddRange(ips);
-            }
-        }
-
         private async void StartButton_Click(object sender, EventArgs e)
         {
-          
+
             string username = textBoxLogin.Text;
             string password = textBoxPassword.Text;
             int numberMaxOfItem = 0;
 
-            if(password != "" ) {
-                selectedItems = checkedListBoxPcSelected.CheckedItems.Cast<string>().ToList();
-            
+            if (password != "")
+            {
+                selectedItems = listViewPcSelector.CheckedItems.Cast<ListViewItem>()
+                                             .Select(item => item.Text)
+                                             .ToList();
+
                 foreach (string item in selectedItems)
                 {
                     numberMaxOfItem++;
@@ -268,7 +265,7 @@ namespace EHSInstall
 
                 foreach (string item in selectedItems)
                 {
-                
+
                     SendToConsole(networkPath);
                     try
                     {
@@ -313,7 +310,7 @@ namespace EHSInstall
             }
         }
 
- 
+
         private async Task ConnexionToPC(string username, string password, string item)
         {
             string networkPath = $"\\\\{item}\\C$"; // Construire correctement le chemin réseau
@@ -352,7 +349,7 @@ namespace EHSInstall
                     string output = process.StandardOutput.ReadToEnd();
                     string error = process.StandardError.ReadToEnd();
 
-                   // richTextBoxConsole.Invoke(new Action(() => SendToConsole(output)));
+                    // richTextBoxConsole.Invoke(new Action(() => SendToConsole(output)));
                     if (!string.IsNullOrWhiteSpace(error))
                     {
                         richTextBoxConsole.Invoke(new Action(() => SendToConsole($"\n ERREUR: {error}")));
@@ -387,23 +384,25 @@ namespace EHSInstall
 
         private void buttonSelectAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < checkedListBoxPcSelected.Items.Count; i++)
+            foreach (ListViewItem item in listViewPcSelector.Items)
             {
-                checkedListBoxPcSelected.SetItemChecked(i, true);
+                item.Checked = true; // Cocher chaque élément
             }
         }
 
         private void buttonDeselectAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < checkedListBoxPcSelected.Items.Count; i++)
+            foreach (ListViewItem item in listViewPcSelector.Items)
             {
-                checkedListBoxPcSelected.SetItemChecked(i, false);
+                item.Checked = false; // Décocher chaque élément
             }
         }
 
         private async void buttonRestart_Click(object sender, EventArgs e)
         {
-            selectedItems = checkedListBoxPcSelected.CheckedItems.Cast<string>().ToList();
+            selectedItems = listViewPcSelector.CheckedItems.Cast<ListViewItem>()
+                                              .Select(item => item.Text)
+                                              .ToList();
             int numberOfIp = 0;
             foreach (string item in selectedItems)
             {
@@ -416,7 +415,7 @@ namespace EHSInstall
                     SendToConsole($"Tentative de redémarrage du pc : {item}");
                     String reply = await Task.Run(() => RestartRemotePC(item, textBoxLogin.Text, textBoxPassword.Text));
                     SendToConsole(reply);
-                } 
+                }
             }
             else if (numberOfIp == 0)
             {
@@ -477,7 +476,91 @@ namespace EHSInstall
 
         private void buttonMajList_Click(object sender, EventArgs e)
         {
-            LoadIpList();
+            LoadListView();
+        }
+        private void LoadListView()
+        {
+            listViewPcSelector.Items.Clear();
+            listViewPcSelector.Groups.Clear();
+            listViewPcSelector.Columns.Clear();
+
+            listViewPcSelector.View = View.Details;
+            listViewPcSelector.CheckBoxes = true;
+            listViewPcSelector.FullRowSelect = true;
+            listViewPcSelector.MultiSelect = true;
+
+            listViewPcSelector.Columns.Add("IP", -3, HorizontalAlignment.Left);
+            listViewPcSelector.HeaderStyle = ColumnHeaderStyle.None;
+            listViewPcSelector.Columns[0].Width = 268;
+
+            int SelectedGroup = -1;
+
+            if (!File.Exists("ips.txt"))
+            {
+                SendToConsole("Le fichier 'ips.txt' n'existe pas.");
+                return;
+            }
+
+            string[] lines = File.ReadAllLines("ips.txt");
+
+            foreach (string line in lines)
+            {
+                try
+                {
+                    if (!line.Contains("."))
+                    {
+                        ListViewGroup groupe = new ListViewGroup(line);
+                        listViewPcSelector.Groups.Add(groupe);
+                        SelectedGroup++;
+                    }
+                    else
+                    {
+                        ListViewItem item = new ListViewItem(line);
+
+                        if (SelectedGroup >= 0 && SelectedGroup < listViewPcSelector.Groups.Count)
+                        {
+                            item.Group = listViewPcSelector.Groups[SelectedGroup];
+                            item.SubItems.Add("Description");
+                            listViewPcSelector.Items.Add(item);
+                        }
+                        else
+                        {
+                            SendToConsole("Le groupe n'est pas correctement défini.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SendToConsole("Erreur lors du traitement des données dans le fichier 'ips.txt'. Assurez-vous qu'il est bien formaté.");
+                }
+            }
+
+            listViewPcSelector.Refresh();
+
+            listViewPcSelector.ItemSelectionChanged += (sender, e) =>
+            {
+                e.Item.Checked = e.IsSelected;
+            };
+
+            listViewPcSelector.ItemChecked += (sender, e) =>
+            {
+                e.Item.Selected = e.Item.Checked;
+            };
+
+        }
+
+        private void buttonFichierIP_Click(object sender, EventArgs e)
+        {
+            string filePath = "ips.txt";
+
+            if (File.Exists(filePath))
+            {
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+            }
+            else
+            {
+                SendToConsole("Le fichier 'ips.txt' n'existe pas.");
+            }
         }
     }
 }

@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.PathSelectorMainFolderbutton = new System.Windows.Forms.Button();
-            this.checkedListBoxPcSelected = new System.Windows.Forms.CheckedListBox();
             this.StartButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.textBoxLogin = new System.Windows.Forms.TextBox();
@@ -48,6 +47,8 @@
             this.richTextBoxMainFolderPath = new System.Windows.Forms.RichTextBox();
             this.labelVersion = new System.Windows.Forms.Label();
             this.buttonMajList = new System.Windows.Forms.Button();
+            this.listViewPcSelector = new System.Windows.Forms.ListView();
+            this.buttonFichierIP = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // PathSelectorMainFolderbutton
@@ -60,20 +61,9 @@
             this.PathSelectorMainFolderbutton.UseVisualStyleBackColor = true;
             this.PathSelectorMainFolderbutton.Click += new System.EventHandler(this.PathSelectorMainFolderbutton_Click);
             // 
-            // checkedListBoxPcSelected
-            // 
-            this.checkedListBoxPcSelected.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkedListBoxPcSelected.FormattingEnabled = true;
-            this.checkedListBoxPcSelected.HorizontalScrollbar = true;
-            this.checkedListBoxPcSelected.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.checkedListBoxPcSelected.IntegralHeight = false;
-            this.checkedListBoxPcSelected.Location = new System.Drawing.Point(12, 179);
-            this.checkedListBoxPcSelected.Name = "checkedListBoxPcSelected";
-            this.checkedListBoxPcSelected.Size = new System.Drawing.Size(292, 176);
-            this.checkedListBoxPcSelected.TabIndex = 3;
-            // 
             // StartButton
             // 
+            this.StartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.StartButton.Enabled = false;
             this.StartButton.Location = new System.Drawing.Point(12, 413);
             this.StartButton.Name = "StartButton";
@@ -162,6 +152,7 @@
             // 
             // checkBoxCopiePDF
             // 
+            this.checkBoxCopiePDF.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCopiePDF.AutoSize = true;
             this.checkBoxCopiePDF.Checked = true;
             this.checkBoxCopiePDF.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -174,6 +165,7 @@
             // 
             // checkBoxCopieApp
             // 
+            this.checkBoxCopieApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCopieApp.AutoSize = true;
             this.checkBoxCopieApp.Checked = true;
             this.checkBoxCopieApp.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -186,6 +178,7 @@
             // 
             // checkBoxCopieQuiz
             // 
+            this.checkBoxCopieQuiz.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCopieQuiz.AutoSize = true;
             this.checkBoxCopieQuiz.Checked = true;
             this.checkBoxCopieQuiz.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -198,6 +191,7 @@
             // 
             // checkBoxCopieRaccourci
             // 
+            this.checkBoxCopieRaccourci.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCopieRaccourci.AutoSize = true;
             this.checkBoxCopieRaccourci.Checked = true;
             this.checkBoxCopieRaccourci.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -210,11 +204,12 @@
             // 
             // buttonRestart
             // 
+            this.buttonRestart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonRestart.Location = new System.Drawing.Point(12, 361);
             this.buttonRestart.Name = "buttonRestart";
-            this.buttonRestart.Size = new System.Drawing.Size(206, 23);
+            this.buttonRestart.Size = new System.Drawing.Size(134, 23);
             this.buttonRestart.TabIndex = 19;
-            this.buttonRestart.Text = "Redémarrer le pc sélectionné";
+            this.buttonRestart.Text = "Redémarrer le pc";
             this.buttonRestart.UseVisualStyleBackColor = true;
             this.buttonRestart.Click += new System.EventHandler(this.buttonRestart_Click);
             // 
@@ -231,6 +226,7 @@
             // 
             // labelVersion
             // 
+            this.labelVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelVersion.AutoSize = true;
             this.labelVersion.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.Location = new System.Drawing.Point(798, 478);
@@ -243,20 +239,44 @@
             // 
             // buttonMajList
             // 
-            this.buttonMajList.Location = new System.Drawing.Point(224, 361);
+            this.buttonMajList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonMajList.Location = new System.Drawing.Point(228, 361);
             this.buttonMajList.Name = "buttonMajList";
-            this.buttonMajList.Size = new System.Drawing.Size(80, 23);
+            this.buttonMajList.Size = new System.Drawing.Size(72, 23);
             this.buttonMajList.TabIndex = 22;
             this.buttonMajList.Text = "Maj liste";
             this.buttonMajList.UseVisualStyleBackColor = true;
             this.buttonMajList.Click += new System.EventHandler(this.buttonMajList_Click);
             // 
+            // listViewPcSelector
+            // 
+            this.listViewPcSelector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listViewPcSelector.HideSelection = false;
+            this.listViewPcSelector.Location = new System.Drawing.Point(12, 179);
+            this.listViewPcSelector.Name = "listViewPcSelector";
+            this.listViewPcSelector.Size = new System.Drawing.Size(289, 176);
+            this.listViewPcSelector.TabIndex = 23;
+            this.listViewPcSelector.UseCompatibleStateImageBehavior = false;
+            // 
+            // buttonFichierIP
+            // 
+            this.buttonFichierIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonFichierIP.Location = new System.Drawing.Point(152, 361);
+            this.buttonFichierIP.Name = "buttonFichierIP";
+            this.buttonFichierIP.Size = new System.Drawing.Size(70, 23);
+            this.buttonFichierIP.TabIndex = 24;
+            this.buttonFichierIP.Text = "Fichier IP";
+            this.buttonFichierIP.UseVisualStyleBackColor = true;
+            this.buttonFichierIP.Click += new System.EventHandler(this.buttonFichierIP_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(900, 509);
+            this.Controls.Add(this.buttonFichierIP);
+            this.Controls.Add(this.listViewPcSelector);
             this.Controls.Add(this.buttonMajList);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.richTextBoxMainFolderPath);
@@ -274,11 +294,8 @@
             this.Controls.Add(this.textBoxLogin);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.StartButton);
-            this.Controls.Add(this.checkedListBoxPcSelected);
             this.Controls.Add(this.PathSelectorMainFolderbutton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(916, 548);
             this.MinimumSize = new System.Drawing.Size(893, 548);
             this.Name = "MainForm";
             this.Text = "EHSInstall";
@@ -289,7 +306,6 @@
 
         #endregion
         private System.Windows.Forms.Button PathSelectorMainFolderbutton;
-        private System.Windows.Forms.CheckedListBox checkedListBoxPcSelected;
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.TextBox textBoxLogin;
@@ -307,6 +323,8 @@
         private System.Windows.Forms.RichTextBox richTextBoxMainFolderPath;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.Button buttonMajList;
+        private System.Windows.Forms.ListView listViewPcSelector;
+        private System.Windows.Forms.Button buttonFichierIP;
     }
 }
 
