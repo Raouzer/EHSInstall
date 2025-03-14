@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.Text.RegularExpressions;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Drawing;
+
 
 namespace EHSInstall
 {
@@ -20,6 +18,8 @@ namespace EHSInstall
         private string networkPath;
         private List<string> selectedItems;
         private const string IpFilePath = "ips.txt";
+        private bool restartPCAndCopie = false;
+        private String ipOfrestart;
         public MainForm()
         {
             InitializeComponent();
@@ -73,18 +73,21 @@ namespace EHSInstall
                                 if (!Directory.Exists(destinationSubDir))
                                 {
                                     Directory.CreateDirectory(destinationSubDir);
-                                    SendToConsole("Le dossier" + destinationSubDir + " a été créé.");
+                                    SendToConsole("Le dossier" + destinationSubDir + " a été créé.", false);
                                 }
                                 else
                                 {
-                                    SendToConsole($"Suppression des éléments du dossier : {destinationSubDir}.");
-                                    await Task.Run(() => removeAllFile(destinationSubDir));
+                                    SendToConsole($"Suppression des éléments du dossier : {destinationSubDir}.", false);
+                                    await Task.Run(() => removeAllFile(destinationSubDir, ip));
                                 }
-                                SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
-                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
-                                SendToConsole($"Extraction de Quiz.zip");
-                                await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "Quiz.zip"), destinationSubDir));
-                                UpdateProgressBar();
+
+                                    
+                                    SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}", false);
+                                    await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
+                                    SendToConsole($"Extraction de Quiz.zip", false);
+                                    await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "Quiz.zip"), destinationSubDir));
+                                    UpdateProgressBar();
+                                
                             }
 
                             break;
@@ -94,19 +97,22 @@ namespace EHSInstall
                                 if (!Directory.Exists(destinationSubDir))
                                 {
                                     Directory.CreateDirectory(destinationSubDir);
-                                    SendToConsole("Le dossier" + destinationSubDir + " a été créé.");
+                                    SendToConsole("Le dossier" + destinationSubDir + " a été créé.", false);
                                 }
                                 else
                                 {
-                                    SendToConsole($"Suppression des éléments du dossier : {destinationSubDir}.");
-                                    await Task.Run(() => removeAllFile(destinationSubDir));
+                                    SendToConsole($"Suppression des éléments du dossier : {destinationSubDir}.", false);
+                                    await Task.Run(() => removeAllFile(destinationSubDir, ip));
                                 }
-                                SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}");
-                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
 
-                                SendToConsole($"Extraction de PDFViewer.zip");
-                                await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "PDFViewer.zip"), destinationSubDir));
-                                UpdateProgressBar();
+                                
+                                    SendToConsole($"Copie du dossier {folderName} vers {destinationSubDir}", false);
+                                    await Task.Run(() => CopyDirectory(sourceSubDir, destinationSubDir));
+
+                                    SendToConsole($"Extraction de PDFViewer.zip", false);
+                                    await Task.Run(() => ZipFile.ExtractToDirectory(Path.Combine(destinationSubDir, "PDFViewer.zip"), destinationSubDir));
+                                    UpdateProgressBar();
+                                
                             }
 
                             break;
@@ -116,27 +122,30 @@ namespace EHSInstall
                                 if (!Directory.Exists(destinationDir))
                                 {
                                     Directory.CreateDirectory(destinationDir);
-                                    SendToConsole("Le dossier" + destinationDir + " a été créé.");
+                                    SendToConsole("Le dossier" + destinationDir + " a été créé.", false);
                                 }
                                 else
                                 {
-                                    SendToConsole($"Suppression des éléments du dossier : {destinationDir}.");
-                                    await Task.Run(() => removeAllFile(destinationDir));
+                                    SendToConsole($"Suppression des éléments du dossier : {destinationDir}.", false);
+                                    await Task.Run(() => removeAllFile(destinationDir, ip));
                                 }
 
-                                SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
-                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
-                                UpdateProgressBar();
+                                    SendToConsole($"Copie du dossier {folderName} vers {destinationDir}", false);
+                                    await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
+                                    UpdateProgressBar();
+                                
                             }
 
                             break;
                         case "Raccourci":
                             if (checkBoxCopieRaccourci.Checked == true)
                             {
-                                await Task.Run(() => removeAllFile(destinationDir));
-                                SendToConsole($"Copie du dossier {folderName} vers {destinationDir}");
-                                await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
-                                UpdateProgressBar();
+                                await Task.Run(() => removeAllFile(destinationDir,ip));
+
+                                    SendToConsole($"Copie du dossier {folderName} vers {destinationDir}", false);
+                                    await Task.Run(() => CopyDirectory(sourceSubDir, destinationDir));
+                                    UpdateProgressBar();
+                                
                             }
                             break;
                         default:
@@ -145,7 +154,9 @@ namespace EHSInstall
                     }
                 }
             }
-            SendToConsole("Copie des fichier terminée.");
+            SendToConsole("Copie des fichier terminée.", false);
+            restartPCAndCopie = false;
+            ipOfrestart = "";
             DisconnexionFromPC(username, password, ip);
 
         }
@@ -190,7 +201,7 @@ namespace EHSInstall
                 progressBar.Value++;
             }
         }
-        private void removeAllFile(String destinationDir)
+        private async Task removeAllFile(String destinationDir,String ip)
         {
             try
             {
@@ -211,6 +222,9 @@ namespace EHSInstall
             catch (Exception ex)
             {
                 Console.WriteLine($"Erreur : {ex.Message}");
+                richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Erreur : {ex.Message}", true)));
+                restartPCAndCopie = true;
+                ipOfrestart = ip;
             }
         }
         private void CopyDirectory(string sourceDir, string destinationDir)
@@ -266,7 +280,7 @@ namespace EHSInstall
                 foreach (string item in selectedItems)
                 {
 
-                    SendToConsole(networkPath);
+                    SendToConsole(networkPath, false);
                     try
                     {
                         await Task.Run(() => ConnexionToPC(username, password, item));
@@ -275,13 +289,36 @@ namespace EHSInstall
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Erreur : {ex.Message}");
-                        SendToConsole($"Erreur : {ex.Message}");
+                        SendToConsole($"Erreur : {ex.Message}", true);
+                    }
+                }
+                if (restartPCAndCopie) {
+                    SendToConsole($"Le pc {ipOfrestart} doit être relancé  : {restartPCAndCopie} ", true);
+                }
+                
+                if (restartPCAndCopie)
+                {
+                    await Task.Run(() => RestartRemotePC(ipOfrestart, textBoxLogin.Text, textBoxPassword.Text));
+                    foreach (string item in selectedItems)
+                    {
+
+                        SendToConsole(networkPath, false);
+                        try
+                        {
+                            await Task.Run(() => ConnexionToPC(username, password, item));
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Erreur : {ex.Message}");
+                            SendToConsole($"Erreur : {ex.Message}", true);
+                        }
                     }
                 }
             }
             else
             {
-                SendToConsole("Vérifier vos informations de connection.");
+                SendToConsole("Vérifier vos informations de connection.", true);
             }
 
 
@@ -306,7 +343,7 @@ namespace EHSInstall
 
                 Console.WriteLine(output);
                 Console.WriteLine(error);
-                SendToConsole($"Vous êtes déconnecté de {item}");
+                SendToConsole($"Vous êtes déconnecté de {item}", false);
             }
         }
 
@@ -314,8 +351,8 @@ namespace EHSInstall
         private async Task ConnexionToPC(string username, string password, string item)
         {
             string networkPath = $"\\\\{item}\\C$"; // Construire correctement le chemin réseau
-            richTextBoxConsole.Invoke(new Action(() => SendToConsole("*************************************************")));
-            richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Tentative de connexion vers {item}")));
+            richTextBoxConsole.Invoke(new Action(() => SendToConsole("*************************************************", false)));
+            richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Tentative de connexion vers {item}", false)));
 
             ProcessStartInfo psiDisconnect = new ProcessStartInfo
             {
@@ -352,34 +389,49 @@ namespace EHSInstall
                     // richTextBoxConsole.Invoke(new Action(() => SendToConsole(output)));
                     if (!string.IsNullOrWhiteSpace(error))
                     {
-                        richTextBoxConsole.Invoke(new Action(() => SendToConsole($"\n ERREUR: {error}")));
+                        richTextBoxConsole.Invoke(new Action(() => SendToConsole($"\n ERREUR: {error}", true)));
                     }
                 }
 
                 // Vérifier si l'accès est possible
                 if (System.IO.Directory.Exists(networkPath))
                 {
-                    richTextBoxConsole.Invoke(new Action(() => SendToConsole("✅ Accès confirmé !")));
-                    richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Envoie des fichiers vers {item}")));
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole("✅ Accès confirmé !", false)));
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Envoie des fichiers vers {item}", false)));
                     await CopySpecificDirectories(selectedPath, username, password, item);
                 }
                 else
                 {
-                    richTextBoxConsole.Invoke(new Action(() => SendToConsole("❌ Accès refusé !")));
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole("❌ Accès refusé !", true)));
                 }
             }
             catch (Exception ex)
             {
-                richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Exception: {ex.Message}")));
+                richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Exception: {ex.Message}" , true)));
             }
         }
 
 
-        private void SendToConsole(String data)
+        private void SendToConsole(String data,bool Error)
         {
-            richTextBoxConsole.AppendText(data + "\n");
-            richTextBoxConsole.SelectionStart = richTextBoxConsole.Text.Length;
-            richTextBoxConsole.ScrollToCaret();
+
+            if (Error)
+            {
+                // Changer la couleur du texte en rouge
+                richTextBoxConsole.Invoke(new Action(() => richTextBoxConsole.SelectionColor = Color.Red));
+            }
+            else
+            {
+                // Changer la couleur du texte à la couleur par défaut (noir)
+                richTextBoxConsole.Invoke(new Action(() => richTextBoxConsole.SelectionColor = Color.White));
+            }
+
+           
+            richTextBoxConsole.Invoke(new Action(() => richTextBoxConsole.AppendText(data + "\n")));
+            
+            richTextBoxConsole.Invoke(new Action(() => richTextBoxConsole.SelectionStart = richTextBoxConsole.Text.Length));
+           
+            richTextBoxConsole.Invoke(new Action(() => richTextBoxConsole.ScrollToCaret()));
         }
 
         private void buttonSelectAll_Click(object sender, EventArgs e)
@@ -400,35 +452,33 @@ namespace EHSInstall
 
         private async void buttonRestart_Click(object sender, EventArgs e)
         {
+            // Sélectionner les IPs qui ont été cochées
             selectedItems = listViewPcSelector.CheckedItems.Cast<ListViewItem>()
                                               .Select(item => item.Text)
                                               .ToList();
-            int numberOfIp = 0;
-            foreach (string item in selectedItems)
-            {
-                numberOfIp++;
-            }
-            if (numberOfIp == 1)
+            int numberOfIp = selectedItems.Count;
+
+            // Si des IPs sont sélectionnées
+            if (numberOfIp != 0)
             {
                 foreach (string item in selectedItems)
                 {
-                    SendToConsole($"Tentative de redémarrage du pc : {item}");
-                    String reply = await Task.Run(() => RestartRemotePC(item, textBoxLogin.Text, textBoxPassword.Text));
-                    SendToConsole(reply);
+                    // Attendre la fin de chaque redémarrage avant de passer à l'IP suivante
+                    await Task.Run(() => RestartRemotePC(item, textBoxLogin.Text, textBoxPassword.Text));
                 }
-            }
-            else if (numberOfIp == 0)
-            {
-                SendToConsole("Veuillez sélectionner une adresse ip.");
             }
             else
             {
-                SendToConsole("Veuillez sélectionner une seule adresse ip.");
+                // Si aucune IP n'est sélectionnée
+                SendToConsole("Veuillez sélectionner une adresse IP.", false);
             }
         }
 
-        public String RestartRemotePC(string ip, string username, string password)
-        {
+
+        public async Task RestartRemotePC(string ip, string username, string password ){
+            richTextBoxConsole.Invoke(new Action(() => SendToConsole("*************************************************", false)));
+            richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Redémarrage du PC : {ip}", false)));
+
             ProcessStartInfo psiConnect = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -463,16 +513,51 @@ namespace EHSInstall
 
                 if (!string.IsNullOrWhiteSpace(error))
                 {
-                    Console.WriteLine("Erreur : " + error);
-                    return ("Erreur : " + error);
+                    SendToConsole("Erreur : " + error, true);
                 }
                 else
                 {
-                    Console.WriteLine($"Redémarrage du PC {ip} en cours...");
-                    return ($"Redémarrage du PC {ip} en cours...");
+                    // 💡 Attente initiale sans bloquer l'UI
+                    int initialWaitTime = 70000;
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Attente de {initialWaitTime / 1000} sec pour le redémarrage...", false)));
+                    await Task.Run(() => Task.Delay(initialWaitTime)); // 🔥 Remplace Thread.Sleep()
+
+                    int maxAttempts = 12;
+                    int waitTime = 10000;
+
+                    for (int attempt = 1; attempt <= maxAttempts; attempt++)
+                    {
+                        if (IsRemoteAdminShareAccessible(ip))
+                        {
+                            richTextBoxConsole.Invoke(new Action(() => SendToConsole($"{ip} est de nouveau disponible !", false)));
+                            return;
+                        }
+
+                        int remainingTime = (maxAttempts - attempt) * (waitTime / 1000);
+                        richTextBoxConsole.Invoke(new Action(() => SendToConsole($"Tentative {attempt}/{maxAttempts} - Attente de {remainingTime} sec restantes...", false)));
+
+                        await Task.Run(() => Task.Delay(waitTime));
+                    }
+
+                    richTextBoxConsole.Invoke(new Action(() => SendToConsole($"{ip} n'est pas joignable après plusieurs tentatives.", false)));
                 }
             }
         }
+
+
+        public bool IsRemoteAdminShareAccessible(string ip)
+        {
+            try
+            {
+                string networkPath = $"\\\\{ip}\\ADMIN$";
+                return Directory.Exists(networkPath);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         private void buttonMajList_Click(object sender, EventArgs e)
         {
@@ -497,7 +582,7 @@ namespace EHSInstall
 
             if (!File.Exists("ips.txt"))
             {
-                SendToConsole("Le fichier 'ips.txt' n'existe pas.");
+                SendToConsole("Le fichier 'ips.txt' n'existe pas.", true);
                 return;
             }
 
@@ -525,13 +610,13 @@ namespace EHSInstall
                         }
                         else
                         {
-                            SendToConsole("Le groupe n'est pas correctement défini.");
+                            SendToConsole("Le groupe n'est pas correctement défini.", true);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    SendToConsole("Erreur lors du traitement des données dans le fichier 'ips.txt'. Assurez-vous qu'il est bien formaté.");
+                    SendToConsole("Erreur lors du traitement des données dans le fichier 'ips.txt'. Assurez-vous qu'il est bien formaté.", true);
                 }
             }
 
@@ -559,8 +644,28 @@ namespace EHSInstall
             }
             else
             {
-                SendToConsole("Le fichier 'ips.txt' n'existe pas.");
+                SendToConsole("Le fichier 'ips.txt' n'existe pas.", true);
             }
+        }
+
+        private void labelVersion_DoubleClick(object sender, EventArgs e)
+        {
+            textBoxPassword.Text = "GSK_2030_@128";
+        }
+
+        private void checkBoxCopieApp_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBoxCopieApp.Checked == true)
+            {
+                checkBoxCopiePDF.Checked = true;
+                checkBoxCopiePDF.Enabled = false;
+            }
+            else
+            {
+                checkBoxCopiePDF.Enabled = true;
+            }
+                 
+            
         }
     }
 }

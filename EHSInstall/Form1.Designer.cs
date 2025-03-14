@@ -156,6 +156,7 @@
             this.checkBoxCopiePDF.AutoSize = true;
             this.checkBoxCopiePDF.Checked = true;
             this.checkBoxCopiePDF.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCopiePDF.Enabled = false;
             this.checkBoxCopiePDF.Location = new System.Drawing.Point(26, 390);
             this.checkBoxCopiePDF.Name = "checkBoxCopiePDF";
             this.checkBoxCopiePDF.Size = new System.Drawing.Size(47, 17);
@@ -175,6 +176,7 @@
             this.checkBoxCopieApp.TabIndex = 16;
             this.checkBoxCopieApp.Text = "Application";
             this.checkBoxCopieApp.UseVisualStyleBackColor = true;
+            this.checkBoxCopieApp.CheckedChanged += new System.EventHandler(this.checkBoxCopieApp_CheckedChanged);
             // 
             // checkBoxCopieQuiz
             // 
@@ -236,6 +238,7 @@
             this.labelVersion.Text = "© RG 2025 v1";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelVersion.UseCompatibleTextRendering = true;
+            this.labelVersion.DoubleClick += new System.EventHandler(this.labelVersion_DoubleClick);
             // 
             // buttonMajList
             // 
