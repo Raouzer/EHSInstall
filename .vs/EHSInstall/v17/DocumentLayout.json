@@ -16,9 +16,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|EHSInstall||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4182DEB4-FB35-4227-BA50-9547A324AF40}|EHSInstall\\EHSInstall.csproj|c:\\users\\gaetan\\documents\\github\\ehsinstall\\ehsinstall\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
     }
   ],
   "DocumentGroupContainers": [
@@ -59,7 +56,7 @@
               "RelativeDocumentMoniker": "EHSInstall\\Form1.cs",
               "ToolTip": "C:\\Users\\Gaetan\\Documents\\Github\\EHSInstall\\EHSInstall\\Form1.cs",
               "RelativeToolTip": "EHSInstall\\Form1.cs",
-              "ViewState": "AgIAAHwCAAAAAAAAAAAwwAwCAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAHwCAAAAAAAAAAA9wAwCAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-10T10:17:59.579Z",
               "EditorCaption": ""
@@ -73,8 +70,7 @@
               "ToolTip": "C:\\Users\\Gaetan\\Documents\\Github\\EHSInstall\\EHSInstall\\EHSInstall.csproj",
               "RelativeToolTip": "EHSInstall\\EHSInstall.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-03-13T09:39:08.536Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-13T09:39:08.536Z"
             },
             {
               "$type": "Document",
@@ -86,8 +82,7 @@
               "RelativeToolTip": "EHSInstall\\Form1.Designer.cs",
               "ViewState": "AgIAANkAAAAAAAAAAAAQwO8AAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-10T11:38:22.823Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T11:38:22.823Z"
             }
           ]
         }
